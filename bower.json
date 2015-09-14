@@ -1,0 +1,35 @@
+{
+	"name": "commonmark-editor",
+	"version": "1.0.0",
+	"description": "A Markdown editor polymer component for commonmark.org",
+	"authors": [
+		"hiep <duongphuhiep@gmail.com>"
+	],
+	"main": "index.html",
+	"moduleType": [
+		"globals"
+	],
+	"keywords": [
+		"markdown",
+		"editor",
+		"wysiwyg",
+		"commonmark",
+		"polymer",
+		"webcomponent"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"commonmark": "~0.21.0",
+		"polymer": "Polymer/polymer#^1.0.0"
+	},
+	"devDependencies": {
+		"web-component-tester": "*"
+	}
+}

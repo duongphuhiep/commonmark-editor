@@ -1,0 +1,16 @@
+{
+  "name": "commonmark-ediotr",
+  "version": "1.0.0",
+  "description": "A Markdown editor polymer component for commonmark.org",
+  "main": "index.html",
+  "author": "hiep <duongphuhiep@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "live-server": "^0.8.1"
+  }
+}
