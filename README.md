@@ -17,8 +17,8 @@ It is a [polymer (1.0)](https://www.polymer-project.org/1.0/) element - a markdo
 * `height` default = `"400px"` 
 * `placeholder` default = `"Markdown content"`
 * `markdownWorkingDir`: every image url which contain only image name will concatenate with the markdownWorkingDir value if it is set. Example if `markdownWorkingDir = "/content"` then
-	*  `![](tiger.png)` is replaced by `![](/content/tiger.png)`
-	*  `![](dargon.jpg)` is replaced by `![](/content/dragon.png)`
+	*  `![](tiger.png)` will be replaced by `![](/content/tiger.png)`
+	*  `![](dargon.jpg)` will be replaced by `![](/content/dragon.jpg)`
 	*  `![](otherFolder/tiger.png)` won't changed
 	*  `![](../vendor/tiger.png)` won't changed
 	*  `![](http://mosaic.com/vendor/tiger.png)` won't changed

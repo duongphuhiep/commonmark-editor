@@ -17,9 +17,15 @@
 <commonmark-editor id="elem2">
 # Title 1
 </commonmark-editor>
+<commonmark-editor id="elem3" markdownWorkingDir="/content">
+![tiger](tiger.png)
+![dragon](http://commonmark.org/dragon.png)
+</commonmark-editor>
 
 <script>
 	var elem1 = document.querySelector('#elem1');
+
+	//console.log(document.querySelector("commonmark-editor#elem2"));
 
 	suite('<commonmark-editor>', function () {
 		test('default properties value', function () {
@@ -42,9 +48,20 @@
 			assert.equal(elem1._numberOfLine(s), 5);
 		});
 
-		test('distributed content is rendered', function(){
-			var elem2 = document.querySelector('#elem2');
-			//TODO
+		test('distributed content is rendered', function(done){
+			var elem2Preview = document.querySelector('#elem2>#preview');
+			setTimeout(function() {
+				assert.include(elem2Preview.innerHTML, "Title 1</h1>");
+				done();
+			}, 600);
+		});
+
+		test('working directory properity', function(done){
+			var elem3Preview = document.querySelector('#elem3>#preview');
+			setTimeout(function() {
+				assert.include(elem3Preview.innerHTML, "/content/tiger.png");
+				done();
+			}, 600);
 		});
 	});
 </script>
