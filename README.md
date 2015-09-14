@@ -2,6 +2,8 @@
 
 It is a [polymer (1.0)](https://www.polymer-project.org/1.0/) element - a markdown editor for [commonmark](http://commonmark.org/) inspired by the [commonmark demo](http://spec.commonmark.org/dingus). 
 
+	bower install commonmark-editor
+
 ## Usage
 
     <commonmark-editor height="500px">
@@ -37,6 +39,7 @@ There is features/enhancements which I did NOT implement because they are not re
 * Enhance preview highlighting
 	* There is some place on the source it should know where to highlight in the preview result, but it is not the case.
 * Sync scrolling between source and preview
+* Make scroll animation
 * Make `markdownWorkingDir` work with every relative local path
  	* For now, it work only with image path which contains only the image name
 * Reponsiveness - the preview content must to rearrange from the right to the bottom of the editor for mobile user
