@@ -13,33 +13,39 @@
 <body>
 
 <!-- You can use the document as a place to set up your fixtures. -->
-<commonmark-editor></commonmark-editor>
+<commonmark-editor id="elem1"></commonmark-editor>
+<commonmark-editor id="elem2">
+# Title 1
+</commonmark-editor>
 
 <script>
-	var myEl = document.querySelector('commonmark-editor');
+	var elem1 = document.querySelector('#elem1');
 
 	suite('<commonmark-editor>', function () {
 		test('default properties value', function () {
-			assert.equal(myEl.height, "400px");
+			assert.equal(elem1.height, "400px");
 		});
 
+		test('trim end spaces and returned lines', function(){
+			var expected = 'abc\ndef\n  \n \nghi'
+			assert.equal(elem1._trimRightSpacesNewline(expected), expected);
 
+			var endWithSpace = expected + "    \n  \n \n ";
+			assert.equal(elem1._trimRightSpacesNewline(endWithSpace), expected);
 
-		/*test('says hello', function() {
-		 assert.equal(myEl.sayHello(), 'seed-element says, Hello World!');
+			var endWithNewline = expected + "    \n  \n \n";
+			assert.equal(elem1._trimRightSpacesNewline(endWithNewline), expected);
+		});
 
-		 var greetings = myEl.sayHello('greetings Earthlings');
-		 assert.equal(greetings, 'seed-element says, greetings Earthlings');
-		 });
+		test('count number of lines', function(){
+			var s = 'abc\ndef\n  \n \nghi'
+			assert.equal(elem1._numberOfLine(s), 5);
+		});
 
-		 test('fires lasers', function(done) {
-		 myEl.addEventListener('seed-element-lasers', function(event) {
-		 assert.equal(event.detail.sound, 'Pew pew!');
-		 done();
-		 });
-		 myEl.fireLasers();
-		 });*/
-
+		test('distributed content is rendered', function(){
+			var elem2 = document.querySelector('#elem2');
+			//TODO
+		});
 	});
 </script>
 
