@@ -15,7 +15,7 @@
 		"wysiwyg",
 		"commonmark",
 		"polymer",
-		"webcomponent"
+		"web-components"
 	],
 	"license": "MIT",
 	"ignore": [
