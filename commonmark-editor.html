@@ -1,6 +1,24 @@
 <link rel="import" href="./bower_components/polymer/polymer.html">
 <link rel="import" href="./commonmark-editor-import.html">
+<!--
+A markdown editor for [commonmark](http://commonmark.org/) inspired by the [commonmark demo](http://spec.commonmark.org/dingus).
 
+## Usage
+
+    <commonmark-editor height="500px">
+      Some initial markdown content (optional)
+    </commonmark-editor>
+
+## `markdownWorkingDir` attribute
+If it is set, every image url which contain only image name will concatenate with its value. Example if `markdownWorkingDir = "/content"` then
+  *  `![](tiger.png)` will be replaced by `![](/content/tiger.png)`
+  *  `![](dargon.jpg)` will be replaced by `![](/content/dragon.jpg)`
+  *  `![](otherFolder/tiger.png)` won't changed
+  *  `![](../vendor/tiger.png)` won't changed
+  *  `![](http://mosaic.com/vendor/tiger.png)` won't changed
+
+TODO: make `markdownWorkingDir` work with every relative local path
+-->
 <dom-module id="commonmark-editor">
     <template>
         <div class="half">
@@ -57,6 +75,9 @@
                     type: String,
                     value: 'Markdown content'
                 },
+				/**
+				 * if set, every 'name-only' image URL will concatenate with its value
+				 */
                 markdownWorkingDir: String
             },
 
