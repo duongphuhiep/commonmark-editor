@@ -40,6 +40,7 @@ There is features/enhancements which I did NOT implement because they are not re
 * Sync scrolling between source and preview
 * Make scroll animation
 * Make `working-dir` work with every relative local path
- 	* For now, it work only with image path which contains only the image name
+  * For now, it work only with image path which contains only the image name
 * Reponsiveness - the preview content must to rearrange from the right to the bottom of the editor for mobile user
 * Source highlighting / line number...
+* Theming capable
