@@ -29,7 +29,14 @@ It is a [polymer (1.0)](https://www.polymer-project.org/1.0/) element - a markdo
 	bower install
 	gulp
 
-I often used [live-server](https://www.npmjs.com/package/live-server) in the developement mode, you can also try [polyserve](https://github.com/PolymerLabs/polyserve) 	
+To run demo on `localhost`, you have to use [polyserve](https://github.com/PolymerLabs/polyserve)
+  	
+	npm install -g polyserve
+	polyserve
+  	
+then navigate to 
+* `http://localhost:8082/components/commonmark-editor/demo`
+* or `http://localhost:8082/components/commonmark-editor/test`
 	
 ## TODO
 	 
