@@ -11,9 +11,6 @@
 		"url": "git://github.com/duongphuhiep/common-mark.git"
 	},
 	"homepage": "https://github.com/duongphuhiep/commonmark-editor",
-	"moduleType": [
-		"globals"
-	],
 	"keywords": [
 		"markdown",
 		"editor",
