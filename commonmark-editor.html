@@ -21,24 +21,21 @@ TODO: make `workingDir` work with every relative local path
 -->
 <dom-module id="commonmark-editor">
     <template>
-        <div class="half">
-            <div class="fix-margin">
-                <textarea id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection"></textarea>
-            </div>
-        </div>
-        <div class="half" id="preview"></div>
-
+		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection"></textarea>
+		<div class="half" id="preview"></div>
         <style>
+			* {
+				box-sizing: border-box;
+			}
             textarea {
                 width: 100%;
+				height: 100%;
                 resize: vertical;
             }
             .half {
                 float: left;
                 width: 50%;
-            }
-            .fix-margin {
-                margin-right: 20px; /*make room for textarea resizable border*/
+				height: 400px;
             }
             ::content.selected {
                 background-color: lightblue;
