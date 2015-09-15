@@ -9,15 +9,15 @@ A markdown editor for [commonmark](http://commonmark.org/) inspired by the [comm
       Some initial markdown content (optional)
     </commonmark-editor>
 
-## `markdownWorkingDir` attribute
-If it is set, every image url which contain only image name will concatenate with its value. Example if `markdownWorkingDir = "/content"` then
+## `workingDir` attribute
+If it is set, every image url which contain only image name will concatenate with its value. Example if `workingDir = "/content/"` then
   *  `![](tiger.png)` will be replaced by `![](/content/tiger.png)`
   *  `![](dargon.jpg)` will be replaced by `![](/content/dragon.jpg)`
   *  `![](otherFolder/tiger.png)` won't changed
   *  `![](../vendor/tiger.png)` won't changed
   *  `![](http://mosaic.com/vendor/tiger.png)` won't changed
 
-TODO: make `markdownWorkingDir` work with every relative local path
+TODO: make `workingDir` work with every relative local path
 -->
 <dom-module id="commonmark-editor">
     <template>
@@ -78,7 +78,7 @@ TODO: make `markdownWorkingDir` work with every relative local path
 				/**
 				 * if set, every 'name-only' image URL will concatenate with its value
 				 */
-                markdownWorkingDir: String
+                workingDir: String
             },
 
             inputChangeAction: function() {
@@ -90,8 +90,8 @@ TODO: make `markdownWorkingDir` work with every relative local path
                         var parsed = this.reader.parse(this.cachedSrc);
 
                         //concatenate the workingDir to every "plain image link"
-                        if (this.markdownWorkingDir) {
-                            parsed = this._fixPlainImageLink(parsed, this.markdownWorkingDir);
+                        if (this.workingDir) {
+                            parsed = this._fixPlainImageLink(parsed, this._addMissingSlash(this.workingDir));
                         }
 
                         this.$.preview.innerHTML = this.writer.render(parsed);
@@ -181,7 +181,7 @@ TODO: make `markdownWorkingDir` work with every relative local path
              *   - ![](image.jpg) will be transformed to ![](workingDir/image.jpg)
              *   - ![](abc/image.jpg) won't change
              * @param parsedMarkdown
-             * @param workingDir
+             * @param workingDir: String
              */
             _fixPlainImageLink: function(parsedMarkdown, workingDir) {
                 var walker = parsedMarkdown.walker();
@@ -197,7 +197,18 @@ TODO: make `markdownWorkingDir` work with every relative local path
                     }
                 }
                 return parsedMarkdown;
-            }
+            },
+
+			/**
+			 * _addMissingSlash("foo") returns "foo/"
+			 * @param dir: String
+			 */
+			_addMissingSlash: function(dir) {
+				if (dir.charAt(dir.length-1)!=='/') {
+					return dir+'/';
+				}
+				return dir;
+			}
         });
     </script>
 

@@ -17,7 +17,7 @@
 <commonmark-editor id="elem2">
 # Title 1
 </commonmark-editor>
-<commonmark-editor id="elem3" markdownWorkingDir="/content">
+<commonmark-editor id="elem3" working-dir="/content">
 ![tiger](tiger.png)
 ![dragon](http://commonmark.org/dragon.png)
 </commonmark-editor>
@@ -54,6 +54,12 @@
 				assert.include(elem2Preview.innerHTML, "Title 1</h1>");
 				done();
 			}, 600);
+		});
+
+
+		test('add missing slash', function(){
+			assert.equal(elem1._addMissingSlash("foo"), "foo/");
+			assert.equal(elem1._addMissingSlash("foo/"), "foo/");
 		});
 
 		test('working directory properity', function(done){
