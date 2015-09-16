@@ -1,6 +1,11 @@
 # Markdown Editor Element
 
-It is a [polymer (1.0)](https://www.polymer-project.org/1.0/) element - a markdown editor for [commonmark](http://commonmark.org/) inspired by the [commonmark demo](http://spec.commonmark.org/dingus). 
+A [polymer (1.0)](https://www.polymer-project.org/1.0/) element - Markdown editor for [commonmark](http://commonmark.org/) inspired by the [commonmark dingus app](http://spec.commonmark.org/dingus). 
+
+See [Online demo](http://open-elements.org/bower_components/commonmark-editor/demo/index.html) (thanks [marcus7777](https://github.com/marcus7777/open-elements.org))
+![screenshoot](/demo/screenshoot.png)
+
+## Installation
 
 	bower install commonmark-editor
 
@@ -9,8 +14,6 @@ It is a [polymer (1.0)](https://www.polymer-project.org/1.0/) element - a markdo
     <commonmark-editor height="500px">
       Some initial markdown content (optional)
     </commonmark-editor>
-    
-![screenshoot](/demo/screenshoot.png)
 
 ## Properties
 	 
