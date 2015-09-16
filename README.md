@@ -30,7 +30,6 @@ See [Online demo](http://open-elements.org/bower_components/commonmark-editor/de
 
 	npm install
 	bower install
-	gulp
 
 To run demo on `localhost`, you have to use [polyserve](https://github.com/PolymerLabs/polyserve)
   	
