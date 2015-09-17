@@ -37,13 +37,14 @@ TODO: make `workingDir` work with every relative local path
                 width: 50%;
 				height: 400px;
             }
-            ::content.selected {
-                background-color: lightblue;
-            }
-            #preview {
-                overflow: scroll;
-                resize: vertical;
-            }
+			::content.selected {
+				background-color: var(--preview-text-highlight, lightblue);
+			}
+			#preview {
+				padding-left: var(--editor-preview-padding, 5px);
+				overflow: scroll;
+				resize: vertical;
+			}
         </style>
     </template>
     <script>
