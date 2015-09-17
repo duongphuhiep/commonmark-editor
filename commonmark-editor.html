@@ -21,29 +21,103 @@ TODO: make `workingDir` work with every relative local path
 -->
 <dom-module id="commonmark-editor">
     <template>
-		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection"></textarea>
-		<div class="half" id="preview"></div>
+		<input checked type="radio" name="tab" id="tab-A" />
+		<input type="radio" name="tab" id="tab-B" />
+		<label class="tab-title" for="tab-A"><div class="tab-link">{{editorLabel}}</div></label>
+		<label class="tab-title" for="tab-B"><div class="tab-link">{{previewLabel}}</div></label>
+		<div class="tab">
+			<textarea id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection"></textarea>
+		</div>
+		<div class="tab">
+			<div id="preview"></div>
+		</div>
         <style>
 			* {
 				box-sizing: border-box;
 			}
-            textarea {
-                width: 100%;
+			:host {
+				float: left;
+				width: 100%;
+			}
+			input {
+				display: none;
+			}
+			textarea {
+				width: 100%;
 				height: 100%;
-                resize: vertical;
-            }
-            .half {
-                float: left;
-                width: 50%;
-				height: 400px;
-            }
-            ::content.selected {
-                background-color: lightblue;
-            }
-            #preview {
-                overflow: scroll;
-                resize: vertical;
-            }
+				resize: vertical;
+				background-color: var(--editor-background, white);
+			}
+			#preview {
+				overflow: scroll;
+				resize: vertical;
+				margin-left: var(--padding-generic, 5px);
+				background-color: var(--editor-background, white);
+			}
+			::content.selected {
+				background-color: var(--preview-highlight-text, lightblue);
+			}
+			.tab-title {
+				display: none;
+			}
+			.tab {
+				float: left;
+				display: block;
+				width: 50%;
+			}
+			@media only screen and (max-width: 800px) {
+				#preview {
+					margin-left: 0px;
+				}
+				.tab-title {
+					display: block;
+					position:relative; /*for #require 1*/
+					cursor: pointer;
+					float: left;
+					background: var(--tab-active-background, #ccc);
+					border: 1px solid #888;
+					border-left: 0;
+					border-bottom: 0;
+					white-space: nowrap;
+					width: 50%;
+				}
+				.tab-link {
+					overflow: hidden;
+					text-align: center;
+					margin:10px;
+				}
+				.tab-title:hover {
+					background: var(--tab-hover-background, #eee);
+				}
+				.tab-title:nth-of-type(1) {
+					border-left: 1px solid #888;
+				}
+				.tab {
+					clear: both;
+					background: var(--tab-passive-background, #ddd);
+					display: none;
+					border: 1px solid #888;
+					padding: var(--padding-generic, 5px);
+				}
+				#tab-B:checked ~ label:nth-of-type(2),
+				#tab-B:not(:checked) ~ label:nth-of-type(1) {
+					background: var(--tab-passive-background, #ddd);
+				}
+				#tab-B:checked ~ label:nth-of-type(2):after,
+				#tab-B:not(:checked) ~ label:nth-of-type(1):after {
+					position: absolute;
+					width:100%; /*#require 1: only work if parent position must be different static*/
+					content: "";
+					height:1px;
+					background: var(--tab-passive-background, #ddd);
+				}
+				input:nth-of-type(2):not(:checked) ~ .tab:nth-of-type(1),
+				input:nth-of-type(2):checked ~ .tab:nth-of-type(2)
+				{
+					display: block;
+					width: 100%;
+				}
+			}
         </style>
     </template>
     <script>
@@ -72,6 +146,18 @@ TODO: make `workingDir` work with every relative local path
                     type: String,
                     value: 'Markdown content'
                 },
+				editorLabel: {
+					type: String,
+					value: 'Editor'
+				},
+				editorLabel: {
+					type: String,
+					value: 'Write'
+				},
+				previewLabel: {
+					type: String,
+					value: 'Preview'
+				},
 				/**
 				 * if set, every 'name-only' image URL will concatenate with its value
 				 */

@@ -1,3 +1,15 @@
+# About this branch
+
+The element become reponsive. On narrow screen, the editor and preview become tab panel
+
+![screenshoot](/demo/screenshoot-narrow.png)
+
+I used pure CSS for it. There are 2 issues which discourage me from merging this feature to the main branch:
+
+In the "tabs mode" 
+ - If there are 2 components `commonmark-editor` on the same page. I can't switch tab of the second element
+ - The scrolling did not work. (Highlight text in preview is ok)
+
 # Markdown Editor Element
 
 A [polymer (1.0)](https://www.polymer-project.org/1.0/) element - Markdown editor for [commonmark](http://commonmark.org/) inspired by the [commonmark dingus app](http://spec.commonmark.org/dingus). 
