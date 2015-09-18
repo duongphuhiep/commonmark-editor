@@ -50,6 +50,5 @@ There is features/enhancements which I did NOT implement because they are not re
 * Make scroll animation
 * Make `working-dir` work with every relative local path
   * For now, it work only with image path which contains only the image name
-* Reponsiveness - the preview content must to rearrange from the right to the bottom of the editor for mobile user
-* Source highlighting / line number...
+* Reponsiveness - the element content must to re-arrange on the mobile screen [checkout this branch](https://github.com/duongphuhiep/commonmark-editor/tree/reponsiveness)...
 * Theming capable
