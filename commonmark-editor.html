@@ -20,23 +20,23 @@ If it is set, every image url which contain only image name will concatenate wit
 TODO: make `workingDir` work with every relative local path
 -->
 <dom-module id="commonmark-editor">
-    <template>
-		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection"></textarea>
+	<template>
+		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection" value="{{value}}"></textarea>
 		<div class="half" id="preview"></div>
-        <style>
+		<style>
 			* {
 				box-sizing: border-box;
 			}
-            textarea {
-                width: 100%;
+			textarea {
+				width: 100%;
 				height: 100%;
-                resize: vertical;
-            }
-            .half {
-                float: left;
-                width: 50%;
+				resize: vertical;
+			}
+			.half {
+				float: left;
+				width: 50%;
 				height: 400px;
-            }
+			}
 			::content.selected {
 				background-color: var(--preview-text-highlight, lightblue);
 			}
@@ -45,157 +45,164 @@ TODO: make `workingDir` work with every relative local path
 				overflow: scroll;
 				resize: vertical;
 			}
-        </style>
-    </template>
-    <script>
-        Polymer({
-            is: 'commonmark-editor',
-            created: function(){
-                this.reader = new commonmark.Parser();
-                this.writer = new commonmark.HtmlRenderer({ sourcepos: true });
-            },
-            ready: function() {
-                //yeild the distribution content to the textarea (to transclude the imperative content)
-                this.$.input.value = Polymer.dom(this).textContent;
-                this.inputChangeAction();
+		</style>
+	</template>
+	<script>
+		Polymer({
+			is: 'commonmark-editor',
+			created: function(){
+				this.reader = new commonmark.Parser();
+				this.writer = new commonmark.HtmlRenderer({ sourcepos: true });
+			},
+			ready: function() {
+				//yeild the distribution content to the textarea (to transclude the imperative content)
+				var content = Polymer.dom(this).textContent;
+				if (content) {
+					this.$.input.value = content;
+					this.inputChangeAction();
+				}
 
-                //set height
-                this.$.input.style.height = this.height;
-                this.$.preview.style.height = this.height;
-            },
+				//set height
+				this.$.input.style.height = this.height;
+				this.$.preview.style.height = this.height;
+			},
 
-            properties: {
-                height: {
-                    type: String,
-                    value: "400px"
-                },
-                placeholder: {
-                    type: String,
-                    value: 'Markdown content'
-                },
+			properties: {
+				height: {
+					type: String,
+					value: "400px"
+				},
+				placeholder: {
+					type: String,
+					value: 'Markdown content'
+				},
 				/**
 				 * if set, every 'name-only' image URL will concatenate with its value
 				 */
-                workingDir: String
-            },
+				workingDir: String,
+				value: {
+					type: String,
+					observer: "inputChangeAction"
+				}
+			},
 
-            inputChangeAction: function() {
-                this.debounce("inputChangeAction", function(){
-                    //only update preview if the content has been changed
-                    var textArea = this.$.input;
-                    if (this.cachedSrc !== textArea.value) {
-                        this.cachedSrc = textArea.value;
-                        var parsed = this.reader.parse(this.cachedSrc);
+			inputChangeAction: function() {
+				this.debounce("inputChangeAction", function(){
+					//only update preview if the content has been changed
+					var textArea = this.$.input;
+					if (this.cachedSrc !== textArea.value) {
+						this.cachedSrc = textArea.value;
+						var parsed = this.reader.parse(this.cachedSrc);
 
-                        //concatenate the workingDir to every "plain image link"
-                        if (this.workingDir) {
-                            parsed = this._fixPlainImageLink(parsed, this._addMissingSlash(this.workingDir));
-                        }
+						//concatenate the workingDir to every "plain image link"
+						if (this.workingDir) {
+							parsed = this._fixPlainImageLink(parsed, this._addMissingSlash(this.workingDir));
+						}
 
-                        this.$.preview.innerHTML = this.writer.render(parsed);
-                    }
-                    this.markSelection();
-                }, 500);
-            },
+						this.$.preview.innerHTML = this.writer.render(parsed);
+					}
+					this.markSelection();
+				}, 500);
+			},
 
-            markSelection: function() {
-                var lineNumber = this._getLineToPreview();
-                var preview = this.$.preview;
+			markSelection: function() {
+				var lineNumber = this._getLineToPreview();
+				var preview = this.$.preview;
 
-                //TODO implement a more accurate method to find the nodeToHighlight
-                var nodeToHighlight = preview.querySelector("*[data-sourcepos^='"+lineNumber+":']");
-                this._highlightInPreview(nodeToHighlight);
-            },
+				//TODO implement a more accurate method to find the nodeToHighlight
+				var nodeToHighlight = preview.querySelector("*[data-sourcepos^='"+lineNumber+":']");
+				this._highlightInPreview(nodeToHighlight);
+			},
 
-            /**
-             * highlight (mark selection) a node in the preview div panel, and scroll it to the center of the preview
-             * panel
-             * @param nodeToHighlight: a node in the preview div
-             */
-            _highlightInPreview: function(nodeToHighlight) {
-                if (this.cacheHighlightedNode === nodeToHighlight) {
-                    return; //the node has already been highlighted
-                }
-                if (nodeToHighlight) {
-                    if (this.cacheHighlightedNode) {
-                        this.cacheHighlightedNode.classList.remove("selected");
-                    }
+			/**
+			 * highlight (mark selection) a node in the preview div panel, and scroll it to the center of the preview
+			 * panel
+			 * @param nodeToHighlight: a node in the preview div
+			 */
+			_highlightInPreview: function(nodeToHighlight) {
+				if (this.cacheHighlightedNode === nodeToHighlight) {
+					return; //the node has already been highlighted
+				}
+				if (nodeToHighlight) {
+					if (this.cacheHighlightedNode) {
+						this.cacheHighlightedNode.classList.remove("selected");
+					}
 
-                    //scroll the node to the center of the preview panel
-                    preview.scrollTop = nodeToHighlight.offsetTop - preview.offsetHeight/2;
+					//scroll the node to the center of the preview panel
+					preview.scrollTop = nodeToHighlight.offsetTop - preview.offsetHeight/2;
 
-                    //highlight it
-                    nodeToHighlight.classList.add("selected");
-                    this.cacheHighlightedNode = nodeToHighlight;
-                }
-                else {
-                    //unhighlight (deselect) the current highlighted node in cache
-                    if (this.cacheHighlightedNode) {
-                        this.cacheHighlightedNode.classList.remove("selected");
-                        delete this.cacheHighlightedNode;
-                    }
-                }
-            },
+					//highlight it
+					nodeToHighlight.classList.add("selected");
+					this.cacheHighlightedNode = nodeToHighlight;
+				}
+				else {
+					//unhighlight (deselect) the current highlighted node in cache
+					if (this.cacheHighlightedNode) {
+						this.cacheHighlightedNode.classList.remove("selected");
+						delete this.cacheHighlightedNode;
+					}
+				}
+			},
 
-            /**
-             * get the line number of the source to preview
-             * this function will return the last non-empty line of the source just before the caret in the textarea
-             */
-            _getLineToPreview: function() {
-                var textArea = this.$.input;
+			/**
+			 * get the line number of the source to preview
+			 * this function will return the last non-empty line of the source just before the caret in the textarea
+			 */
+			_getLineToPreview: function() {
+				var textArea = this.$.input;
 
-                //use the character on the right of the caret
-                var pos = textArea.selectionStart;
-                if (pos+1 < textArea.value.length) {
-                    pos++;
-                }
+				//use the character on the right of the caret
+				var pos = textArea.selectionStart;
+				if (pos+1 < textArea.value.length) {
+					pos++;
+				}
 
-                //contentBeforeCaret is trim every spaces, \n on the right
-                var contentBeforeCaret = this._trimRightSpacesNewline(textArea.value.substr(0, pos));
-                var currentLine = this._numberOfLine(contentBeforeCaret);
-                return currentLine;
-            },
+				//contentBeforeCaret is trim every spaces, \n on the right
+				var contentBeforeCaret = this._trimRightSpacesNewline(textArea.value.substr(0, pos));
+				var currentLine = this._numberOfLine(contentBeforeCaret);
+				return currentLine;
+			},
 
-            /**
-             * count number of line by counting all the returned line characters
-             * @param s: String
-             */
-            _numberOfLine: function(s) {
-                return (s.match(/\n/g) || []).length + 1;
-            },
+			/**
+			 * count number of line by counting all the returned line characters
+			 * @param s: String
+			 */
+			_numberOfLine: function(s) {
+				return (s.match(/\n/g) || []).length + 1;
+			},
 
-            /**
-             * trim all spaces and returned line character on the right
-             * @param s: String
-             */
-            _trimRightSpacesNewline: function(s) {
-                var pattern = /([ ]*\n[ ]*)+$/g;
-                var resu = s.replace(pattern, '');
-                return resu;
-            },
+			/**
+			 * trim all spaces and returned line character on the right
+			 * @param s: String
+			 */
+			_trimRightSpacesNewline: function(s) {
+				var pattern = /([ ]*\n[ ]*)+$/g;
+				var resu = s.replace(pattern, '');
+				return resu;
+			},
 
-            /**
-             * - concatenate the workingDir to every "plain image link" (plain image link is filename only and does not contain any '/'). eg
-             *   - ![](image.jpg) will be transformed to ![](workingDir/image.jpg)
-             *   - ![](abc/image.jpg) won't change
-             * @param parsedMarkdown
-             * @param workingDir: String
-             */
-            _fixPlainImageLink: function(parsedMarkdown, workingDir) {
-                var walker = parsedMarkdown.walker();
-                var event, node;
+			/**
+			 * - concatenate the workingDir to every "plain image link" (plain image link is filename only and does not contain any '/'). eg
+			 *   - ![](image.jpg) will be transformed to ![](workingDir/image.jpg)
+			 *   - ![](abc/image.jpg) won't change
+			 * @param parsedMarkdown
+			 * @param workingDir: String
+			 */
+			_fixPlainImageLink: function(parsedMarkdown, workingDir) {
+				var walker = parsedMarkdown.walker();
+				var event, node;
 
-                while ((event = walker.next())) {
-                    node = event.node;
-                    if (node.type === 'Image' && event.entering) {
-                        var imageUrl = node.destination;
-                        if (imageUrl.indexOf('/') <= -1) { //if the imageUrl is plain
-                            node.destination = workingDir+imageUrl;
-                        }
-                    }
-                }
-                return parsedMarkdown;
-            },
+				while ((event = walker.next())) {
+					node = event.node;
+					if (node.type === 'Image' && event.entering) {
+						var imageUrl = node.destination;
+						if (imageUrl.indexOf('/') <= -1) { //if the imageUrl is plain
+							node.destination = workingDir+imageUrl;
+						}
+					}
+				}
+				return parsedMarkdown;
+			},
 
 			/**
 			 * _addMissingSlash("foo") returns "foo/"
@@ -207,7 +214,7 @@ TODO: make `workingDir` work with every relative local path
 				}
 				return dir;
 			}
-        });
-    </script>
+		});
+	</script>
 
 </dom-module>
