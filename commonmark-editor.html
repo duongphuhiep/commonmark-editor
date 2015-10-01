@@ -21,7 +21,7 @@ TODO: make `workingDir` work with every relative local path
 -->
 <dom-module id="commonmark-editor">
 	<template>
-		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection" value="{{value}}"></textarea>
+		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection" value="{{value::input}}"></textarea>
 		<div class="half" id="preview"></div>
 		<style>
 			* {
@@ -82,7 +82,8 @@ TODO: make `workingDir` work with every relative local path
 				workingDir: String,
 				value: {
 					type: String,
-					observer: "inputChangeAction"
+					observer: "inputChangeAction",
+					notify: true
 				},
 
 				/**
