@@ -83,14 +83,33 @@ TODO: make `workingDir` work with every relative local path
 				value: {
 					type: String,
 					observer: "inputChangeAction"
+				},
+
+				/**
+				 * Use to detect the dirty input state
+				 * - turn to true when the text is changed by human input
+				 * - reset to false if the value is set programmatically
+				 */
+				changedByUser: {
+					type: Boolean,
+					readOnly: true,
+					notify: true,
+					default: false
 				}
 			},
 
-			inputChangeAction: function() {
+			inputChangeAction: function(e) {
 				this.debounce("inputChangeAction", function(){
 					//only update preview if the content has been changed
 					var textArea = this.$.input;
 					if (this.cachedSrc !== textArea.value) {
+						if (e && e.constructor.name==="KeyboardEvent"){
+							this._setChangedByUser(true);
+						}
+						else {
+							this._setChangedByUser(false);
+						}
+
 						this.cachedSrc = textArea.value;
 						var parsed = this.reader.parse(this.cachedSrc);
 
