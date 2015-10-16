@@ -100,17 +100,19 @@ TODO: make `workingDir` work with every relative local path
 			},
 
 			inputChangeAction: function(e) {
+				var textArea = this.$.input;
+
+				//if text value changed after a KeyboardEvent of user
+				if (this.cachedSrc !== textArea.value && (e && e.constructor.name==="KeyboardEvent")){
+					this._setChangedByUser(true);
+				}
+				else {
+					this._setChangedByUser(false);
+				}
+
 				this.debounce("inputChangeAction", function(){
 					//only update preview if the content has been changed
-					var textArea = this.$.input;
 					if (this.cachedSrc !== textArea.value) {
-						if (e && e.constructor.name==="KeyboardEvent"){
-							this._setChangedByUser(true);
-						}
-						else {
-							this._setChangedByUser(false);
-						}
-
 						this.cachedSrc = textArea.value;
 						var parsed = this.reader.parse(this.cachedSrc);
 
