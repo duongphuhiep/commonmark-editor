@@ -110,11 +110,8 @@ TODO: make `workingDir` work with every relative local path
 				var textArea = this.$.input;
 
 				//if text value changed after a KeyboardEvent of user
-				if (this.cachedSrc !== textArea.value && (e && e.constructor.name==="KeyboardEvent")){
-					this._setChangedByUser(true);
-				}
-				else {
-					this._setChangedByUser(false);
+				if (this.cachedSrc !== textArea.value){
+					this._setChangedByUser(e && e.constructor.name==="KeyboardEvent");
 				}
 
 				this.debounce("inputChangeAction", function(){
