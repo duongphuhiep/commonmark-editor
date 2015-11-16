@@ -17,11 +17,15 @@ If it is set, every image url which contain only image name will concatenate wit
   *  `![](../vendor/tiger.png)` won't changed
   *  `![](http://mosaic.com/vendor/tiger.png)` won't changed
 
+## Dirty state
+  * property `changedByUser` = true (dirty): the value was changed by user
+##
+
 TODO: make `workingDir` work with every relative local path
 -->
 <dom-module id="commonmark-editor">
 	<template>
-		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="inputChangeAction" on-tap="markSelection" value="{{value::input}}"></textarea>
+		<textarea class="half" id="input" placeholder="{{placeholder}}" on-keyup="keyPressed" on-tap="markSelection" value="{{value::input}}"></textarea>
 		<div class="half" id="preview"></div>
 		<style>
 			* {
@@ -65,8 +69,7 @@ TODO: make `workingDir` work with every relative local path
 				//yeild the distribution content to the textarea (to transclude the imperative content)
 				var content = Polymer.dom(this).textContent;
 				if (content) {
-					this.$.input.value = content;
-					this.inputChangeAction();
+					this.initValue(content);
 				}
 
 				//set height
@@ -96,7 +99,7 @@ TODO: make `workingDir` work with every relative local path
 				/**
 				 * Use to detect the dirty input state
 				 * - turn to true when the text is changed by human input
-				 * - reset to false if the value is set programmatically
+				 * - reset to false if the initValue(s) method is called
 				 */
 				changedByUser: {
 					type: Boolean,
@@ -106,14 +109,18 @@ TODO: make `workingDir` work with every relative local path
 				}
 			},
 
+			/**
+			 * set the value and clear the dirty state
+			 */
+			initValue: function(v) {
+				this.$.input.value = v;
+				this.inputChangeAction(v);
+				this._setChangedByUser(false);
+				//console.info(false);
+			},
+
 			inputChangeAction: function(e) {
 				var textArea = this.$.input;
-
-				//if text value changed after a KeyboardEvent of user
-				if (this.cachedSrc !== textArea.value){
-					this._setChangedByUser(e && e.constructor.name==="KeyboardEvent");
-				}
-
 				this.debounce("inputChangeAction", function(){
 					//only update preview if the content has been changed
 					if (this.cachedSrc !== textArea.value) {
@@ -129,6 +136,13 @@ TODO: make `workingDir` work with every relative local path
 					}
 					this.markSelection();
 				}, 500);
+			},
+
+			keyPressed: function(e) {
+				var textArea = this.$.input;
+				this._setChangedByUser(this.cachedSrc !== textArea.value);
+				this.inputChangeAction(false);
+				//console.info(this.cachedSrc !== textArea.value);
 			},
 
 			markSelection: function() {
