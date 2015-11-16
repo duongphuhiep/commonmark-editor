@@ -1,6 +1,6 @@
 {
 	"name": "commonmark-editor",
-	"version": "1.0.8",
+	"version": "1.0.10",
 	"description": "A Markdown editor polymer component for commonmark.org",
 	"authors": [
 		"hiep <duongphuhiep@gmail.com>"

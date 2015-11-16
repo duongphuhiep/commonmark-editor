@@ -19,6 +19,7 @@ See [Online demo](http://open-elements.org/bower_components/commonmark-editor/de
 	 
 * `height` default = `"400px"` 
 * `placeholder` default = `"Markdown content"`
+* `changedByUser` turn to true if value changed by client keypress
 * `working-dir`: every image url which contain only image name will concatenate with the working-dir value if it is set. Example if `working-dir = "/content"` then
 	*  `![](tiger.png)` will be replaced by `![](/content/tiger.png)`
 	*  `![](dargon.jpg)` will be replaced by `![](/content/dragon.jpg)`
@@ -50,5 +51,5 @@ There is features/enhancements which I did NOT implement because they are not re
 * Make scroll animation
 * Make `working-dir` work with every relative local path
   * For now, it work only with image path which contains only the image name
-* Reponsiveness - the element content must to re-arrange on the mobile screen [checkout this branch](https://github.com/duongphuhiep/commonmark-editor/tree/reponsiveness)...
+* Reponsiveness - [checkout this branch](https://github.com/duongphuhiep/commonmark-editor/tree/reponsiveness)...
 * Theming capable
