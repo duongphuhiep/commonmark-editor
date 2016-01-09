@@ -219,7 +219,7 @@ TODO: make `workingDir` work with every relative local path
 			 * @param s: String
 			 */
 			_trimRightSpacesNewline: function(s) {
-				var pattern = /([ ]*\n[ ]*)+$/g;
+				var pattern = /( |\n)+$/g;
 				var resu = s.replace(pattern, '');
 				return resu;
 			},
